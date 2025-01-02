@@ -11,13 +11,13 @@ def insert(Model: Model, db: sqlite3.Connection, attrs: dict, autocommit=False):
     if autocommit is True:
         db.commit()
 
-
 def make_insert_sql(table, **kwargs):
     keys = kwargs.items()
     columns = map(lambda x: x[0], keys)
     values = tuple(map(lambda y: y[1], keys))
     sql = f"INSERT INTO {table} ({",".join(columns)}) VALUES ({",".join(len(values) * "?")});"
     return (sql, values)
+
 
 
 

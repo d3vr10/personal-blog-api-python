@@ -2,7 +2,6 @@ import sqlite3
 from textwrap import dedent
 from lib.db.db import insert_user, insert_post, insert_comment, insert_category, insert_tag, insert_post_tags
 
-
 def create(db: sqlite3.Connection):
     create_users_sql = dedent(f"""
         --sql
