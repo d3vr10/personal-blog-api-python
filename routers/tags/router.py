@@ -1,7 +1,7 @@
 import sqlite3
 from fastapi import APIRouter, HTTPException
 from lib.db.db import get_by_field, get_db_connection, insert_tag, update_tag, delete_tag
-from lib.db.models import TagCreate
+from lib.db.models import TagCreate, TagEdit
 
 router = APIRouter(prefix="/tags")
 
@@ -35,7 +35,7 @@ async def POST(tag: TagCreate):
             raise HTTPException(status_code=400, detail=msg)
 
 @router.put("/{tag_name}")
-async def PUT(tag_name: str, tag: TagCreate):
+async def PUT(tag_name: str, tag: TagEdit):
     with get_db_connection() as db:
         rows = update_tag(db, tag.model_dump(exclude_defaults=True), where={"name": tag_name})
         db.commit()
