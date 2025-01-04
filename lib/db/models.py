@@ -11,6 +11,34 @@ class ModelMeta(type(BaseModel)):
 class Model(BaseModel, metaclass=ModelMeta):
     display_name: ClassVar[str]
 
+class PostEdit(BaseModel):
+    title: constr(min_length=3, max_length=20) | None = None
+    content: str | None = None
+    
+
+class PostCreate(BaseModel):
+    user_id: int
+    title: constr(min_length=3, max_length=20)
+    content: str
+
+class TagCreate(BaseModel):
+    name: str
+
+class TagEdit(BaseModel):
+    name: str | None = None
+
+class UserCreate(BaseModel):
+    username: str
+    email: str
+    bio: str | None = None
+    profile_picture: str | None = None
+
+class UserEdit(BaseModel):
+    username: str | None = None
+    email: str | None = None
+    bio: str | None = None
+    profile_picture: str | None = None
+
 
 class User(Model):
     id: int | None = None

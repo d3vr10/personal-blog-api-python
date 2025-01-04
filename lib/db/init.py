@@ -1,6 +1,6 @@
 import sqlite3
 from textwrap import dedent
-from lib.db.db import insert_user, insert_post, insert_comment, insert_category, insert_tag, insert_post_tags
+from lib.db.db import insert_user, insert_post, insert_comment, insert_category, insert_tag, insert_post_tags, get_db_connection
 
 def create(db: sqlite3.Connection):
     create_users_sql = dedent(f"""
@@ -156,7 +156,7 @@ def check_init(db: sqlite3.Connection):
 
 
 def init():
-    with sqlite3.connect(":memory:") as db:
+    with get_db_connection() as db:
         try: 
             check_init(db)
         except sqlite3.Error as err:
