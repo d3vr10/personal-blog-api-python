@@ -27,6 +27,14 @@ class TagCreate(BaseModel):
 class TagEdit(BaseModel):
     name: str | None = None
 
+class CategoryCreate(BaseModel):
+    name: str
+    description: str | None = None
+
+class CategoryEdit(BaseModel):
+    name: str | None = None
+    description: str | None = None
+
 class UserCreate(BaseModel):
     username: str
     email: str

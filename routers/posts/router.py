@@ -60,7 +60,7 @@ async def POST(post: PostCreate):
             )
             db.commit()
             return result
-        w
+
         except sqlite3.IntegrityError as e:
             msg = str(e)
             if "user_id" in str(e):
