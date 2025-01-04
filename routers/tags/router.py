@@ -25,7 +25,9 @@ async def POST(tag: TagCreate):
     with get_db_connection() as db:
         try:
             row = insert_tag(db, tag.model_dump())
+            db.commit()
             return row
+
         except sqlite3.IntegrityError as err:
             msg = str(err)
             if "name" in str(err):
@@ -36,6 +38,7 @@ async def POST(tag: TagCreate):
 async def PUT(tag_name: str, tag: TagCreate):
     with get_db_connection() as db:
         rows = update_tag(db, tag.model_dump(exclude_defaults=True), where={"name": tag_name})
+        db.commit()
         return rows
 
 @router.delete("/{tag_name}")
@@ -45,6 +48,7 @@ async def DELETE(tag_name: str):
         if not result > 0:
             return {"msg": f'Tag "{tag_name}" wasn\'t found'}
 
+        db.commit()
         return {"msg": f'Deleted tag "{tag_name}"'}
         
 

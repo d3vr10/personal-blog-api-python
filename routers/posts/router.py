@@ -32,6 +32,9 @@ async def PUT(post_id: int, post: PostEdit):
                 where={"id": post_id},
             )
             post = get_by_field("Post", db, where={"id": post_id}, single=True)
+            db.commit()
+            return post
+
         except sqlite3.IntegrityError as e:
             msg = ""
             if "user_id" in str(e):
@@ -39,12 +42,13 @@ async def PUT(post_id: int, post: PostEdit):
             elif "title" in str(e):
                 msg = "Title already exists"
             raise HTTPException(status_code=400, detail=msg)
-        return post
+        
     
 @router.delete("/{post_id}")
 async def DELETE(post_id: int):
     with get_db_connection() as db:
         delete_post(db, where={"id": post_id})
+        db.commit()
 
 @router.post("")
 async def POST(post: PostCreate):
@@ -54,6 +58,9 @@ async def POST(post: PostCreate):
                 db, 
                 post.model_dump(),
             )
+            db.commit()
+            return result
+        w
         except sqlite3.IntegrityError as e:
             msg = str(e)
             if "user_id" in str(e):
@@ -62,5 +69,4 @@ async def POST(post: PostCreate):
                 msg = "Title already exists"
             raise HTTPException(status_code=400, detail=msg)
             
-        return result
     

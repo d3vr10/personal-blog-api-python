@@ -25,6 +25,8 @@ async def GET_ALL():
 async def DELETE(user_id: int):
     with get_db_connection() as db:
         delete_user(db, where={"id": user_id})
+        db.commit()
+
         return {"message": "User deleted"}
 
 @router.put("/{user_id}")
@@ -38,6 +40,10 @@ async def PUT(user_id: int, user: UserEdit):
             )
             if not result:
                 raise HTTPException(status_code=404, detail="User not found")
+
+            db.commit()
+            return result
+
         except sqlite3.IntegrityError as e:
             msg = ""
             if "email" in str(e):
@@ -45,7 +51,6 @@ async def PUT(user_id: int, user: UserEdit):
             elif "username" in str(e):
                 msg = "Username already exists"
             raise HTTPException(status_code=400, detail=msg)
-        return result
 
 
 
